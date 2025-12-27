@@ -1,8 +1,8 @@
 """
 NeuroNet Backend API - Main Application Entry Point
 
-STEP 1: Database Connection Integration
-FastAPI application with Neon PostgreSQL connection lifecycle management.
+STEP 3: Authentication Integration
+FastAPI application with JWT authentication and role-based access control
 """
 
 import logging
@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import health
+from app.api import auth, health
 from app.core.database import connect_to_db, close_db_connection
 
 # Configure logging
@@ -55,6 +55,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(health.router)
+app.include_router(auth.router)
 
 
 @app.get("/")

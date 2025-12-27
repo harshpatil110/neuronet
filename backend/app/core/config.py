@@ -23,10 +23,38 @@ class Settings(BaseSettings):
         description="Neon PostgreSQL connection string (required)"
     )
     
-    # Security Configuration
-    # Note: JWT authentication will be implemented in later steps
-    JWT_SECRET_KEY: str = "changeme"
+    # Security Configuration - JWT Authentication
+    # IMPORTANT: Change JWT_SECRET_KEY in production!
+    JWT_SECRET_KEY: str = Field(
+        default="changeme",
+        description="Secret key for JWT token signing (MUST be changed in production)"
+    )
     JWT_ALGORITHM: str = "HS256"
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    
+    @field_validator("JWT_SECRET_KEY")
+    @classmethod
+    def validate_jwt_secret(cls, v: str) -> str:
+        """
+        Warn if using default JWT secret key.
+        
+        In production, this should be a strong, random string.
+        """
+        if v == "changeme":
+            import warnings
+            warnings.warn(
+                "⚠️  Using default JWT_SECRET_KEY. Change this in production!",
+                stacklevel=2
+            )
+        
+        if len(v) < 32:
+            import warnings
+            warnings.warn(
+                "⚠️  JWT_SECRET_KEY should be at least 32 characters for security.",
+                stacklevel=2
+            )
+        
+        return v
     
     @field_validator("DATABASE_URL")
     @classmethod
