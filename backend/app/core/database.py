@@ -89,3 +89,21 @@ async def get_db() -> AsyncGenerator[asyncpg.Connection, None]:
         # Always return connection to pool
         await _pool.release(connection)
 
+
+async def get_db_pool() -> asyncpg.Pool:
+    """
+    Get the database connection pool directly.
+    
+    Use this when you need to acquire connections manually
+    or run operations outside of FastAPI dependency injection.
+    
+    Returns:
+        asyncpg.Pool: The active connection pool
+        
+    Raises:
+        RuntimeError: If the pool hasn't been initialized
+    """
+    if not _pool:
+        raise RuntimeError("Database pool not initialized. Call connect_to_db() first.")
+    return _pool
+
