@@ -61,42 +61,56 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const register = async (email: string, password: string, role: string) => {
-    const response = await fetch(`${API_URL}/auth/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password, role })
-    })
+    try {
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password, role })
+      })
 
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.detail || 'Registration failed')
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.detail || 'Registration failed')
+      }
+
+      // Auto-login after registration
+      await login(email, password)
+    } catch (error) {
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        throw new Error('Cannot connect to server. Please make sure the backend is running on http://localhost:8000')
+      }
+      throw error
     }
-
-    // Auto-login after registration
-    await login(email, password)
   }
 
   const login = async (email: string, password: string) => {
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    })
+    try {
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      })
 
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.detail || 'Login failed')
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.detail || 'Login failed')
+      }
+
+      const data = await response.json()
+      localStorage.setItem('token', data.access_token)
+
+      // Fetch user data
+      await fetchUser(data.access_token)
+    } catch (error) {
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        throw new Error('Cannot connect to server. Please make sure the backend is running on http://localhost:8000')
+      }
+      throw error
     }
-
-    const data = await response.json()
-    localStorage.setItem('token', data.access_token)
-
-    // Fetch user data
-    await fetchUser(data.access_token)
 
     // Redirect to dashboard
     router.push('/dashboard')
