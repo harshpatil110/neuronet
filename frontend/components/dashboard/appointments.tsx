@@ -4,10 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Calendar } from "@/components/ui/calendar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export function UpcomingAppointments() {
-    const [date, setDate] = useState<Date | undefined>(new Date())
+    const [date, setDate] = useState<Date | undefined>(undefined)
+    
+    // Set date only on client-side to avoid hydration mismatch
+    useEffect(() => {
+        setDate(new Date())
+    }, [])
 
     return (
         <Card className="col-span-1 md:col-span-2 lg:col-span-2 shadow-md border-none flex flex-col h-full">
