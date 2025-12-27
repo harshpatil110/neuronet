@@ -1,8 +1,8 @@
 """
 NeuroNet Backend API - Main Application Entry Point
 
-STEP 3: Authentication Integration
-FastAPI application with JWT authentication and role-based access control
+STEP 4: User Profile APIs
+FastAPI application with JWT authentication and user profile management
 """
 
 import logging
@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import auth, health
+from app.api import auth, health, users
 from app.core.database import connect_to_db, close_db_connection
 
 # Configure logging
@@ -56,6 +56,7 @@ app.add_middleware(
 # Include routers
 app.include_router(health.router)
 app.include_router(auth.router)
+app.include_router(users.router, prefix="/users")
 
 
 @app.get("/")
