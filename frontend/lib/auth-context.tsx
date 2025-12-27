@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
+import { getDashboardRoute } from './role-redirect'
 
 interface User {
   id: string
@@ -38,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  const fetchUser = async (token: string) => {
+  const fetchUser = async (token: string, shouldRedirect: boolean = false): Promise<User | null> => {
     try {
       const response = await fetch(`${API_URL}/auth/me`, {
         headers: {
@@ -49,12 +50,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (response.ok) {
         const userData = await response.json()
         setUser(userData)
+        
+        // Redirect based on role if requested
+        if (shouldRedirect) {
+          const redirectPath = getDashboardRoute(userData.role)
+          router.push(redirectPath)
+        }
+        
+        return userData
       } else {
         localStorage.removeItem('token')
+        return null
       }
     } catch (error) {
       console.error('Failed to fetch user:', error)
       localStorage.removeItem('token')
+      return null
     } finally {
       setIsLoading(false)
     }
@@ -103,17 +114,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const data = await response.json()
       localStorage.setItem('token', data.access_token)
 
-      // Fetch user data
-      await fetchUser(data.access_token)
+      // Fetch user data and redirect based on role
+      await fetchUser(data.access_token, true)
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
         throw new Error('Cannot connect to server. Please make sure the backend is running on http://localhost:8000')
       }
       throw error
     }
-
-    // Redirect to dashboard
-    router.push('/dashboard')
   }
 
   const logout = () => {
