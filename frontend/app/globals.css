@@ -1,0 +1,162 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-poppins);
+  --font-mono: var(--font-poppins);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+:root {
+  --radius: 0.625rem;
+
+  /* Champagne Background */
+  --background: #F9E7C9;
+  /* Black Bean Text */
+  --foreground: #280B0B;
+
+  /* White Cards for contrast on Champagne */
+  --card: #FFFFFF;
+  --card-foreground: #280B0B;
+
+  --popover: #FFFFFF;
+  --popover-foreground: #280B0B;
+
+  /* Garnet Primary */
+  --primary: #781C2E;
+  --primary-foreground: #FFFFFF;
+
+  /* Secondary/Muted can be softer versions */
+  --secondary: #FDF3E6;
+  --secondary-foreground: #280B0B;
+
+  --muted: #EAD8BB;
+  --muted-foreground: #5D4037;
+
+  --accent: #FDF3E6;
+  --accent-foreground: #781C2E;
+
+  --destructive: #D32F2F;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #E6D2B5;
+  --input: #E6D2B5;
+  --ring: #781C2E;
+
+  /* Chart Colors (Garnet, Rust, etc for Light) */
+  --chart-1: #781C2E;
+  --chart-2: #A62A40;
+  --chart-3: #D96C75;
+  --chart-4: #F2Aeb5;
+  --chart-5: #FFD1D6;
+
+  /* Sidebar (Champagne/Light) */
+  --sidebar: #F9E7C9;
+  --sidebar-foreground: #280B0B;
+  --sidebar-primary: #781C2E;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EAD8BB;
+  --sidebar-accent-foreground: #781C2E;
+  --sidebar-border: #E6D2B5;
+  --sidebar-ring: #781C2E;
+}
+
+.dark {
+  /* Indigo Dye Background */
+  --background: #113E53;
+  --foreground: #FFFFFF;
+
+  /* Lighter Indigo for Cards */
+  --card: #1A4D66;
+  --card-foreground: #FFFFFF;
+
+  --popover: #1A4D66;
+  --popover-foreground: #FFFFFF;
+
+  /* Bright Pink Primary */
+  --primary: #F1626B;
+  --primary-foreground: #113E53;
+
+  /* Peach Secondary */
+  --secondary: #EFC18F;
+  --secondary-foreground: #113E53;
+
+  --muted: #1A4D66;
+  --muted-foreground: #AABEC6;
+
+  --accent: #1A4D66;
+  --accent-foreground: #F1626B;
+
+  --destructive: #EF5350;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #2A5D76;
+  --input: #2A5D76;
+  --ring: #F1626B;
+
+  /* Chart Colors (Bright Pink, Peach, etc for Dark) */
+  --chart-1: #F1626B;
+  --chart-2: #EFC18F;
+  --chart-3: #FFAB91;
+  --chart-4: #FFCCBC;
+  --chart-5: #FFECB3;
+
+  /* Sidebar (Indigo) */
+  --sidebar: #0D3344;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #F1626B;
+  --sidebar-primary-foreground: #113E53;
+  --sidebar-accent: #1A4D66;
+  --sidebar-accent-foreground: #F1626B;
+  --sidebar-border: #2A5D76;
+  --sidebar-ring: #F1626B;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
