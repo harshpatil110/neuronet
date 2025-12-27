@@ -1,8 +1,8 @@
 """
 NeuroNet Backend API - Main Application Entry Point
 
-STEP 4: User Profile APIs
-FastAPI application with JWT authentication and user profile management
+STEP 5: Clinical Assessments (PHQ-9 & GAD-7)
+FastAPI application with JWT authentication, user profiles, and mental health assessments
 """
 
 import logging
@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import auth, health, users
+from app.api import auth, health, users, assessments
 from app.core.database import connect_to_db, close_db_connection
 
 # Configure logging
@@ -57,6 +57,7 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(auth.router)
 app.include_router(users.router, prefix="/users")
+app.include_router(assessments.router, prefix="/assessments")
 
 
 @app.get("/")
